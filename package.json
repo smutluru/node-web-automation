@@ -1,0 +1,14 @@
+{
+  "name": "node-web-automation",
+  "version": "1.0.0",
+  "description": "Node Minimal Code Web Automation based on selenium",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "smutluru",
+  "license": "ISC",
+  "dependencies": {
+    "selenium-webdriver": "^4.0.0-alpha.1"
+  }
+}

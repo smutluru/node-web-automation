@@ -1,0 +1,24 @@
+{
+    "title": "Test Suite POC",
+    "description": "Some description",
+    "values": {
+        "browser": "chrome"
+    },
+    "_logs": {
+        "_start": "Test Suite 2 starting execution.",
+        "_success": "Test Suite 2 executed successfully.",
+        "_failure": "Test Suite 2 did not execute completely."
+    },
+    "tcs": [
+        {
+            "location": "tc1",
+            "__comments__": "First test case",
+            "_id": "18376"
+        },
+        {
+            "location": "tc1",
+            "__comments__": "First test case",
+            "_id": "56327"
+        }
+    ]
+}

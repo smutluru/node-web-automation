@@ -1,0 +1,8 @@
+{
+    "reports" : "./reports",
+    "ts1" : "./test-entities/test-suites/test-suite-1.json",
+    "ts2" : "./test-entities/test-suites/test-suite-2.json",
+    "tc1" : "./test-entities/test-cases/tc1.json",
+    "tc2" : "./test-entities/test-cases/tc2.json",
+    "open" : "./test-entities/test-cases/open-maximize.json"
+}

@@ -1,0 +1,14 @@
+{
+    "title": "Test Suite POC",
+    "description": "Some description",
+    "values": {
+        "browser": "chrome"
+    },
+    "tcs": [
+        {
+            "location": "tc1",
+            "__comments__": "First test case",
+            "_id": "18376"
+        }
+    ]
+}

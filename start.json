@@ -1,0 +1,14 @@
+{
+    "title" : "Some Project Name",
+    "description" : "Some Description can go here.",
+    "reportLocation" : "reports",
+    "values" : {
+        "home" : "paytm.com"
+    },
+
+    "tss" : [
+        {
+            "location" : "ts1"
+        }
+    ]
+}

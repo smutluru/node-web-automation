@@ -1,0 +1,21 @@
+{
+    "title": "Open and Maximize",
+    "description": "Opens the browser and maximizes the window.",
+    "values": {},
+    "_logs": {
+        "_start": "Starting Browser.",
+        "_success": "Browser launched and maximized.",
+        "_failure": "Failed to perform some of the operations."
+    },
+    "commands": [
+        {
+            "op": "open",
+            "_browser": "${browser}",
+            "_id": "22266"
+        },
+        {
+            "op": "maximize",
+            "_id": "56206"
+        }
+    ]
+}

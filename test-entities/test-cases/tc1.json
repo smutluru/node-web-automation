@@ -1,0 +1,66 @@
+{
+    "title": "Test Case 1",
+    "description": "Some description for test case 1",
+    "values": {
+        "home": "https://www.amazon.in/",
+        "time": "2"
+    },
+    "_logs" : {
+        "_start" : "Starting the Execution of Test Case 1",
+        "_success" : "Test Case 1 executed successfully.",
+        "_failure" : "Test Case 1 failed to execute entirely"
+    },
+    "commands": [
+        {
+            "op": "use",
+            "location": "open",
+            "_id": "34053"
+        },
+        {
+            "op": "goto",
+            "value": "${home}",
+            "_id": "1"
+        },
+        {
+            "op": "wait-click",
+            "xpath": "//span[.='Shop by']",
+            "_logs": {
+                "_start": "We are now going to click on the login button.",
+                "_success": "We were able to click on the login button.",
+                "_failure": "We were unable to click on the login button."
+            },
+            "__comments__": "Comments can go here, they don't interfere.",
+            "_id": "58211"
+        },
+        {
+            "op": "wait",
+            "xpath": "//a[.='Televisions']",
+            "_id": "84193"
+        },
+        {
+            "op": "screenshot",
+            "_id": "321"
+        },
+        {
+            "op": "wait-click",
+            "xpath": "//a[.='Baby Fashion']",
+            "_id": "3335"
+        },
+        {
+            "op": "screenshot",
+            "_id": "123"
+        },
+        {
+            "op": "call",
+            "procedure": "waitTime",
+            "inputs": {
+                "time": "${time}"
+            },
+            "_id": "39562"
+        },
+        {
+            "op": "close",
+            "_id": "4833"
+        }
+    ]
+}

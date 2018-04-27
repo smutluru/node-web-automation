@@ -27,4 +27,43 @@ module.exports = class Procedures {
             }, inputs.time * 1000);
         });
     }
+    
+    static closeNewWindow(cmd, report, values, driver) {
+        driver = driver.driver;
+
+        var currentHandle;
+
+        return driver.getWindowHandle()
+            .then(_ => currentHandle = _)
+            .then(_ => driver.getAllWindowHandles())
+            .then(_ => driver.switchTo().window(_[_.length - 1]))
+            .then(_ => driver.close())
+            .then(_ => driver.switchTo().window(currentHandle));
+    }
+    
+    static waitRefresh(cmd, report, values, driver){
+        utils.assertNotNull(cmd.inputs.xpath, "Procedure waitRefresh needs xpath as input");
+        utils.assertNotNull(cmd.inputs.xpathLoadedCheck, "Procedure waitRefresh needs xpathLoadedCheck as input");
+        let maxAttempts = cmd.inputs._maxAttempts ? cmd.inputs._maxAttempts : defaultMaxRefreshAttempts;
+        let intervalInSeconds = cmd.inputs._interval ? cmd.inputs._interval : defaultRefreshIntervalInSeconds;
+        report.log(`Will wait for element @ ${cmd.inputs.xpath} and refresh page each ${intervalInSeconds} upto ${maxAttempts} times.`);
+        return waitForElementRefreshRepeat(driver, cmd.inputs.xpath, cmd.inputs.xpathLoadedCheck, intervalInSeconds, maxAttempts);
+    }
+    
+    static function waitForElementRefreshRepeat(driver, xpath, xpathLoadedCheck, intervalInSeconds, attemptsLeft){
+        console.log(`Reloaded. ${attemptsLeft} attempts left.`);
+
+        return driver.wait(xpathLoadedCheck)
+        .then(_ => driver.getElement(xpath))
+        .catch(_ => {
+            if(attemptsLeft > 0){
+                console.log(`Will wait for ${intervalInSeconds} seconds, then reload.`);
+                return new Promise(res => setTimeout(() => res(), intervalInSeconds * 1000))
+                .then(_ => driver.refresh())
+                .then(_ => waitForElementRefreshRepeat(driver, xpath, xpathLoadedCheck, intervalInSeconds, --attemptsLeft));
+            }
+
+            return Promise.reject();
+        });
+    }
 }

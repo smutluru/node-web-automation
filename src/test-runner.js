@@ -61,8 +61,7 @@ module.exports = class TestRunner {
             report.setDetails(tc.title, tc.description, tc._logs);
         }
 
-        tc.commands.map(cmd => CommandRunner.initCMDValues(cmd, values))
-            .forEach(cmd => {
+        tc.commands.forEach(cmd => {
                 p = p.then(_ => {
                     return _ && _.end ? _ :
                         CommandRunner.exeCMD(cmd, report, values, driver);
@@ -79,15 +78,19 @@ module.exports = class TestRunner {
                     } else {
                         report.fail();
 
-                        try {
-                            driver.screenshot().then(_ => {
-								report.attachImage(_);
-							}).then(_ => driver.close());
-							
-                        } catch (_) { }
-
-                        return { end: true };
+                        return driver.screenshot().then(_ => {
+                            report.attachImage(_);
+                        }).then(_ => {
+                            //return driver.close()
+                        })
+                        .then(_ => {
+                            return {end: true};
+                        }).catch(_ => {
+                            return {end: true};
+                        });
                     }
+
+                    return Promise.resolve();
                 }).catch(_ => { });
             });
 

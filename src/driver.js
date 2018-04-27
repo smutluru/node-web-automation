@@ -1,8 +1,13 @@
 const { Builder, By, until } = require('selenium-webdriver');
 
+const loaderTimeCheckIntervalInSeconds = 2, _loaderTimeOutInSeconds = 1800;
+const defaultWaitTimeOutInSeconds = 1200;
+
 module.exports = class Driver {
-    constructor() {
+    constructor(waitTimeOutInSeconds) {
         this.driver = null;
+        this.waitTimeOutInSeconds = waitTimeOutInSeconds ? waitTimeOutInSeconds : defaultWaitTimeOutInSeconds;
+        this.timer = 0;
     }
 
     open(browser = 'chrome') {
@@ -25,31 +30,69 @@ module.exports = class Driver {
         return this.driver.findElement(By.xpath(xpath));
     }
 
-    async click(xpath) {
-        let element = await this.getElement(xpath);
-        return element.click();
+    click(xpath) {
+        return this.getElement(xpath).then(_ => _.click());
     }
 
-    async type(xpath, whatToType) {
-        let element = await this.getElement(xpath);
-        return element.sendKeys(whatToType);
+    click_JS(xpath){
+        return this.getElement(xpath).then(_ => {
+            return this.driver.executeAsyncScript((element, callback) => {
+                element.click();
+                callback();
+            }, _);
+        });
+    }
+
+    doubleClick(xpath){
+        return this.getElement(xpath).then(_ => {
+            return this.driver.executeAsyncScript((element, callback) => {
+                let doubleClickEvent = document.createEvent('MouseEvents');
+                doubleClickEvent.initEvent ('dblclick', true, true);
+                element.dispatchEvent(doubleClickEvent);
+                callback();
+            }, _);
+        });
+    }
+
+    type(xpath, whatToType) {
+        return this.getElement(xpath).then(element => element.sendKeys(whatToType));
     }
 
     wait(xpath) {
-        return this.driver.wait(until.elementIsVisible(this.getElement(xpath)));
+        return this.driver.wait(until.elementLocated(By.xpath(xpath)), this.waitTimeOutInSeconds * 1000);
     }
 
-    async wait_click(xpath) {
-        await this.wait(xpath);
-        return this.click(xpath);
-    }
-
-    async wait_type(xpath, whatToType) {
-        await this.wait(xpath);
-        return this.type(xpath, whatToType);
+    wait_until_enabled(xpath){
+        return this.wait(xpath)
+        .then(_ => this.driver.wait(() => {
+            return this.getElement(xpath)
+            .then(_ => this.driver.executeScript(el => !el.disabled, _));
+        }, this.waitTimeOutInSeconds * 1000));
     }
 
     screenshot() {
         return this.driver.takeScreenshot();
+    }
+
+    switchFrame(index){
+        //null index leads to parent frame
+        return this.driver.switchTo().frame(index);
+    }
+
+    refresh(){
+        return this.driver.navigate().refresh();
+    }
+
+    back(){
+        return this.driver.navigate().back();
+    }
+
+    forward(){
+        return this.driver.navigate().forward();
+    }
+
+    getWindowCount(){
+        return this.driver.getAllWindowHandles()
+        .then(_ => _.length);
     }
 };

@@ -48,8 +48,22 @@ module.exports = {
         return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}-${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}`;
     },
 
-    generateId: function () {
-        return `${Math.floor(1 + Math.random() * 100000)}`;
+    generateId: function (length = 5) {
+        if(typeof length != "number" || length <=0){
+            throw new Error('Paramter length should be a number greater than 0');
+        }
+
+        let key = 1;
+
+        for(let i=0; i<length; i++){
+            key *= 10;
+        }
+
+        return `${Math.floor(1 + Math.random() * key)}`;
+    },
+
+    getRandom: function(minValue, maxValue){
+        return minValue + (Math.floor(Math.random() * (maxValue + 1 - minValue)));
     },
 
     obtainPath(location) {
